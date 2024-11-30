@@ -61,9 +61,12 @@ const user = [
     }
 ]
 
-let clutter = "";
-user.forEach(function(elem){
-    clutter += `<div class="card">
+
+
+function insta() {
+    let clutter = "";
+    user.forEach(function (elem, index) {
+        clutter += `<div class="card">
             <div class="top">
                 <img src="${elem.userprofile}" alt="" class="userprofile">
                 <div class="userlocation">
@@ -74,20 +77,39 @@ user.forEach(function(elem){
                 <i id="dot" class="ri-more-fill"></i>
             </div>
             <div class="centre">
-                <img src="${elem.userPost}" alt="" class="userPost" >
+                <img id='${index}' src="${elem.userPost}" alt="" class="userPost">
             </div>
             <div class="icon">
-                <p id="L" class="likeCount"><i class="ri-heart-3-line"></i>${elem.likeCount}</p>
-                <p id="C" class="commentCount"><i class="ri-chat-1-line"></i>${elem.commentCount}</p>
-                <p id="S" class="shareCount"><i class="ri-send-plane-fill"></i>${elem.shareCount}</p>
+                <div>
+                    <span id='${index}'> ${elem.like ? '<i id="liked" class="ri-heart-3-fill"></i>' : '<i id="notliked" class="ri-heart-3-line"></i>'}</span>
+                    <p id="L" class="likeCount">${elem.likeCount}</p>
+                </div>
+                <p><i class="ri-chat-1-line"></i>${elem.commentCount}</p>
+                <p><i class="ri-send-plane-fill"></i>${elem.shareCount}</p>
                 <i id="T" class="ri-bookmark-line"></i>
             </div>
             <div class="about">
                 <h5 class="caption">${elem.caption}</h5>
                 <p class="view">View all comments</p>
-                <p class="timeAgoUploaded">${elem.timeAgoUploaded}</p>
+                <p class="timeAgoUploaded">${elem.timeAgoUploaded} days ago</p>
             </div>
-        </div>`
+        </div>`;
+    });
+    document.querySelector(".main").innerHTML = clutter;
+
+    // Attach Event Listeners After Rendering
+    
+}
+insta()
+let main = document.querySelector('.main')
+main.addEventListener('click', (e)=>{
+    if(user[e.target.id].like){
+        user[e.target.id].likeCount--
+        user[e.target.id].like = false
+    }else{
+        user[e.target.id].likeCount++
+        user[e.target.id].like = true
+    }
+    insta()
 })
 
-document.querySelector(".main").innerHTML = clutter;
